@@ -33,19 +33,34 @@ class DataBuffer:
         self.avg = 0
 
 def mostrarresultado(angle,med):
+    text=''
     if GlobalVars.measType==1:
-        sg.popup_ok('Flexión dorsal '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
+        text=('Flexión dorsal '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
     elif GlobalVars.measType==0:
-        sg.popup_ok('Flexión palmar: '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
+        text=('Flexión palmar: '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
     elif GlobalVars.measType==2:
-        sg.popup_ok('Desviación radial: '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
+        text=('Desviación cubital: '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
     elif GlobalVars.measType==3:
-        sg.popup_ok('Desviación cubital: '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
+        text =('Desviación radial: '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
     elif med==4:
         pass
     else:
-        pass
+        text=''
+    layout=[[sg.Text(text)],
+            [sg.Button('Si'), sg.Button('No')]]
+    window = sg.Window('Guardar resultado?', layout)
+
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED or event == 'No':
+            sg.popup_ok('El resultado se ha descartado')
+            break
+        elif event == 'Si':
+            sg.popup_ok('El resultado se ha guardado')
+            break
     GlobalVars.ready = 0
+    window.close()
+
 class GlobalVars:
     isZero = 0
     ready = 0

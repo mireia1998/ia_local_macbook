@@ -68,7 +68,7 @@ def createguimenu(mp_drawing, mp_hands, cap, width, height):
     layout = [[sg.Button("Mi perfil")]
                 , [sg.Button("Tutoriales de uso")],
               [sg.Button("Flexión Dorsal y Palmar")],
-              [sg.Button("Aducción/abducción de muñeca")], [sg.Button("Prono/Supinación de muñeca")],
+              [sg.Button("Desviación radial y cubital")], [sg.Button("Prono/Supinación de muñeca")],
                [sg.Image(filename='sener_small-2.png')]
               ]
     # Crear la ventana

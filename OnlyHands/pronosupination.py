@@ -109,6 +109,9 @@ def getOrientation(pts, img):
     textbox = cv2.rectangle(img, (cntr[0], cntr[1] - 25), (cntr[0] + 250, cntr[1] + 10), (255, 255, 255), -1)
     cv2.putText(img, label, (cntr[0], cntr[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
 
+    angok=(-int(np.rad2deg(angle)) - 90)
+
+
     return angle
 
 def bucle(cap, upper_bound,lower_bound):
@@ -162,6 +165,7 @@ def bucle(cap, upper_bound,lower_bound):
 
             # Find the orientation of each shape
             getOrientation(c, frame)
+
         cv2.imshow('Midiendo...', frame)
         if cv2.waitKey(10) & 0xFF == ord('q'):
             pass
