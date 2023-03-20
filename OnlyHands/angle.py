@@ -2,8 +2,11 @@
 import numpy as np
 import cv2
 import countdown
+import tkinter as tk
+import PySimpleGUI as sg
 
 def angulosdedos(image, results, joint_list,handtype, width, height):
+    countdown.GlobalVars.lr = results.multi_handedness[0].classification[0].label
     for hand in results.multi_hand_landmarks:
 
         for joint in joint_list:
@@ -11,6 +14,8 @@ def angulosdedos(image, results, joint_list,handtype, width, height):
             b = np.array([hand.landmark[joint[1]].x, hand.landmark[joint[1]].y])
             radians=np.arctan2((hand.landmark[joint[1]].y - hand.landmark[joint[0]].y), (hand.landmark[joint[1]].x - hand.landmark[joint[0]].x))
             angle=np.abs(radians*180.0/np.pi)
+
+
             if handtype ==0: # si es flex/ext lo que se mide
                 if angle>90:
                     angle=abs(angle-180)
@@ -18,6 +23,19 @@ def angulosdedos(image, results, joint_list,handtype, width, height):
                 angle= abs(90-angle)
             elif handtype ==2:
                 angle= abs(90-angle)
+
+
+            if(hand.landmark[joint[0]].y < hand.landmark[joint[1]].y):
+                if(handtype==0):
+                    countdown.GlobalVars.measType = 0
+                else:
+                    countdown.GlobalVars.measType = 2
+
+            else:
+                if(handtype==0):
+                    countdown.GlobalVars.measType = 1
+                else:
+                    countdown.GlobalVars.measType = 3
 
             #Pasar puntos de formato mediapipe a OpenCV y crear el horizonte
             puntoa1=tuple(np.multiply(a, [width, height]).astype(int))
@@ -41,18 +59,19 @@ def angulosdedos(image, results, joint_list,handtype, width, height):
             cv2.line(image, puntoa1, puntob1, (0, 255, 0), thickness=2, lineType=8)
 
             if not countdown.GlobalVars.event.is_set() and countdown.GlobalVars.registered==False: # aun no es cero
-                if (round(angle) < 3) :
-                    countdown.GlobalVars.stopFlag == 0
-                    cv2.putText(image, "ready, angle is 0deg", tuple(np.multiply(b, [width, height]).astype(int)),
+
+                if (round(angle) < 5) :
+                    cv2.putText(image, "ready, wait...", tuple(np.multiply(b, [width, height]).astype(int)),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2, cv2.LINE_AA)
-                    if(countdown.GlobalVars.started==0):
+                    if not countdown.GlobalVars.stop_event.is_set():
                         countdown.hiloconteo(3)
-                        countdown.GlobalVars.started=1
+                    else:
+                        countdown.GlobalVars.stop_event.clear()
                 else:
-                    cv2.putText(image, "please move to 0 deg", tuple(np.multiply(a, [1000, 650]).astype(int)),
+                    countdown.GlobalVars.stop_event.set()
+                    cv2.putText(image, "please move to 0 deg"+str(angle), tuple(np.multiply(a, [1000, 650]).astype(int)),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (240, 29, 0), 2, cv2.LINE_AA)
-                    countdown.GlobalVars.stopFlag==1
-                    countdown.GlobalVars.started = 0
+
             elif countdown.GlobalVars.registered==False : # ya es cero
 
                 if (round(angle) < 3):
@@ -65,6 +84,12 @@ def angulosdedos(image, results, joint_list,handtype, width, height):
                     # aqui programamos la lógica de almacenamiento de ángulo
                     countdown.processnumber(angle)
             else:
-                print("Flexion medida, es " + str(countdown.GlobalVars.datomedio))
+                if countdown.GlobalVars.ready == 0:
+                    countdown.GlobalVars.ready = 1
+                    countdown.mostrarresultado(angle,0)
+                    countdown.GlobalVars.event.clear()
+                    countdown.GlobalVars.registered= False
+
+
 
     return image

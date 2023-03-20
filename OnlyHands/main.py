@@ -41,7 +41,7 @@ def createLoginPage(mp_drawing, mp_hands, cap, width, height):
 
     # Crear layout
     layout = [
-        [sg.Image(filename='images/sener_small-2.png')],
+        [sg.Image(filename='sener_small-2.png')],
         [sg.Text('Usuario:', size=(100, 1))],
         [sg.InputText('', pad=((0, 0), (0, 10)), key='user')],
         [sg.Text('Contraseña:', size=(100, 1))],
@@ -69,7 +69,7 @@ def createguimenu(mp_drawing, mp_hands, cap, width, height):
                 , [sg.Button("Tutoriales de uso")],
               [sg.Button("Flexión Dorsal y Palmar")],
               [sg.Button("Aducción/abducción de muñeca")], [sg.Button("Prono/Supinación de muñeca")],
-               [sg.Image(filename='images/sener_small-2.png')]
+               [sg.Image(filename='sener_small-2.png')]
               ]
     # Crear la ventana
     window = sg.Window("Menú principal", layout, margins=(100, 50), element_justification='c')

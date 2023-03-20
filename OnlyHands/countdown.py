@@ -2,6 +2,7 @@ import math
 import time
 import threading
 from collections import deque
+import PySimpleGUI as sg
 
 
 class DataBuffer:
@@ -31,7 +32,20 @@ class DataBuffer:
         self.total = 0
         self.avg = 0
 
-
+def mostrarresultado(angle,med):
+    if GlobalVars.measType==1:
+        sg.popup_ok('Flexión dorsal '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
+    elif GlobalVars.measType==0:
+        sg.popup_ok('Flexión palmar: '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
+    elif GlobalVars.measType==2:
+        sg.popup_ok('Desviación radial: '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
+    elif GlobalVars.measType==3:
+        sg.popup_ok('Desviación cubital: '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
+    elif med==4:
+        pass
+    else:
+        pass
+    GlobalVars.ready = 0
 class GlobalVars:
     isZero = 0
     ready = 0
@@ -40,26 +54,30 @@ class GlobalVars:
     med = 0
     event = threading.Event()
     datomedio = 0
+    stop_event=threading.Event()
     db = DataBuffer()  # aqui inicializamos como variable global el buffer de ángulos
     registered = False
     i=0
+    measType=0
+    lr=0
 
 
 def thread_function():
-    print("Hilo comenzando...")
     t = 5
-    while t and GlobalVars.stopFlag == 0:
+    while t:
         time.sleep(1)
         t -= 1
-        print("-1 sec, " + str(t))
     if t == 0:
         print("Hilo finalizado!")
         GlobalVars.event.set()
 
 
 def hiloconteo(secs):
-    mythread = threading.Thread(target=thread_function)
-    mythread.start()
+    if(not GlobalVars.stop_event.is_set()):
+        mythread = threading.Thread(target=thread_function)
+        mythread.start()
+
+
 
 
 def processnumber(angle):
@@ -75,6 +93,7 @@ def processnumber(angle):
             print(str(GlobalVars.i))
         else:
             GlobalVars.datomedio = 0
+            GlobalVars.i=0
             GlobalVars.db.clear()
             print("Buffer vacio, empezamos...")
 
