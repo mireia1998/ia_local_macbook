@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "ia-trauma-tfm",
+  "private_key_id": "b6bdad69a365290555d7370f2b1fabbf5c8ee952",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDP/vlxs5oSgbwg\nqmdiQydYfJOI4kXWb20CDi9x4cQ5qmGZDqSRrRM+GNfEfgxrtpMnzwKVzt2AlTQf\n1Ppx6ECW3B7HovA+sDRHJU3PIWG9bC9N2KiUyWjwP4xVVO2f6++AdALsKEBUHFCm\nOV1NJcWxEUx1/RpBP+a+PLCq4seVPqB5OY6TxgHAFZnGfYchEzry5ROmsgD2J7dU\nkWuu8NQBYxW0HFDNdRiT+Ed+gerN1WUDJ2Z2/4COWJVfcSHPkK/oTd23PRbW2uye\nFSxCU6Cq3IXwPQ0yNOuMPJhm5Bt4ZrFphUtklEZ8Z2g47JanDE6aa+xO/goFc0+H\nimEKkSL/AgMBAAECggEASHEUHONCSqbPyIrBBirAZePBmL/CNhzJ2Rjqsl3A85qh\ncmb0r14Z4RtS7vc9yTgmCYviaR3K7NFKfbm2XnzXHhPdToez6AmDs7HM51LHkWtA\nEHtgv61kdKSVclTpjDTmzhTZvbmJKiJQfoxlMAzzTSfquv9jqQ0iBujpWSMyAwrT\ng5VOEybLmxfvMMjkgSs4By2RZVQj0NK/eRYc47w+1E+3NktxTfSog1FJUfMN/c7v\nUTrE2E/2SB8NtlYwsohIjmAzIZfNFdqDolMhjPNUbyq65AGHzmqxtEJKbxu/ZV9r\nv1YsKp/U0cOomNMQIUsjU08W2587KVcNrMK1T8W6/QKBgQDw3tHI9UgntuoILUiV\n0xn8Vdp4GcBW4grV1yCBXIJfXBhOIh5FRPbjcqrhPMl8n1ygau0W3si8v+haS2r2\n4/zWjTji7DWTalBm5LyjlrqUA4JikVI+Q/OuC5QMtEDtldr7iQLE138FeHUOQnB3\nBAGbFPGoF/qJYs+fmijjaCAsFQKBgQDdD4ln0YvP6NGMu+xs5LUxMfoY+CcfHlzz\nqThMs2CAt/LZfhmSi/yvdUZ2CjjIE1S8lbypnAeEtmfGsLkQ7m0uugHeSoiofVRi\nmUn0gEYLa4hBeeiEUHr81ZlnDsyJVFLeaxE/rUb3qMDkevpJnNNNAxerPQTC1BvS\neSIZjCITwwKBgGBnbeNWeHictvJq3WBJy165JeVnuRmNAvUvUu0zj2KHQ5sSALeM\nsJu76zSW1bWxOqth4F6E8CbLUD3DbZ4/BZUBlMEN9St5I5Dq/60hyK8w8GBu9VHC\ndKc2Lx0ej9YHYkvGPHt4HHieC4uXf9fCnLnrGgVDA501FRA17SOHK0k5AoGAYjF/\nkI0k9JJvWnszNt+UmKihdivsfMco9Nbq+i8Ho8WR6wg3ZcAm2u1WAiLiPAVSM36z\n0gdL06iOilR/sESoXQQkxlAHSgh5zl5W2nOMKZB3ctYq8XMqXlqnDH8nXa0GLmQS\nwl0+082y+QqjWMV/morQHbE6ByzeuuwxuHVlwa8CgYBTFjJZL6vPGSGt+XCtAura\n4rhPFZIoxasteIr8assxAnGssd90WA8fUzVmJM++aJPOIyOMbXSxzuaz3eKAUnJZ\nTS/iJrAjqepAcDF4V9mhHVSW0+lWDTIkTQrxlLpIkP699yUCz5JraahZuLqgG/G0\nTnZN3i5V+oAkfrHFsroTsA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-tyul8@ia-trauma-tfm.iam.gserviceaccount.com",
+  "client_id": "117380172672911195423",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-tyul8%40ia-trauma-tfm.iam.gserviceaccount.com"
+}

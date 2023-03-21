@@ -2,6 +2,8 @@ import cv2
 from math import atan2, cos, sin, sqrt, pi
 import numpy as np
 import PySimpleGUI as sg
+import angle
+import countdown
 
 def setFrameSize(capp):
     cv = capp
@@ -102,24 +104,69 @@ def getOrientation(pts, img):
     drawAxis(img, cntr, p2, (0, 0, 255), 5)
 
     angle = atan2(eigenvectors[0, 1], eigenvectors[0, 0])  # orientation in radians
-
+    countdown.GlobalVars.measType = 4
 
     # Ponemos la etiqueta
-    label = "  Rotacion: " + str(-int(np.rad2deg(angle)) - 90) + " grados"
-    textbox = cv2.rectangle(img, (cntr[0], cntr[1] - 25), (cntr[0] + 250, cntr[1] + 10), (255, 255, 255), -1)
-    cv2.putText(img, label, (cntr[0], cntr[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
+    #label = "  Rotacion: " + str(-int(np.rad2deg(angle)) - 90) + " grados"
+    #textbox = cv2.rectangle(img, (cntr[0], cntr[1] - 25), (cntr[0] + 250, cntr[1] + 10), (255, 255, 255), -1)
+    #cv2.putText(img, label, (cntr[0], cntr[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
 
     angok=(-int(np.rad2deg(angle)) - 90)
 
+    angleprocess(img, angok, cntr)
+
 
     return angle
+
+def angleprocess(image, angle,cntr):
+
+    angle=abs(angle)
+    angle=abs(180-angle)
+
+    print(str(angle))
+    if not countdown.GlobalVars.event.is_set() and countdown.GlobalVars.registered == False:  # aun no es cero
+
+        if (round(angle) < 5):
+            label = "Ready, wait..."
+            textbox = cv2.rectangle(image, (cntr[0], cntr[1] - 25), (cntr[0] + 250, cntr[1] + 10), (255, 255, 255), -1)
+            cv2.putText(image, label, (cntr[0], cntr[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
+
+            if not countdown.GlobalVars.stop_event.is_set():
+                countdown.hiloconteo(3)
+            else:
+                countdown.GlobalVars.stop_event.clear()
+        else:
+            countdown.GlobalVars.stop_event.set()
+            label = "Please move to 0 deg"
+            textbox = cv2.rectangle(image, (cntr[0], cntr[1] - 25), (cntr[0] + 250, cntr[1] + 10), (255, 255, 255), -1)
+            cv2.putText(image, label, (cntr[0], cntr[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
+
+    elif countdown.GlobalVars.registered == False:  # ya es cero
+
+        if (round(angle) < 5):
+            label = "Mueve tu mano..."
+            textbox = cv2.rectangle(image, (cntr[0], cntr[1] - 25), (cntr[0] + 250, cntr[1] + 10), (255, 255, 255), -1)
+            cv2.putText(image, label, (cntr[0], cntr[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
+        else:
+            label = "  Rotacion: " + str(angle) + " grados"
+            textbox = cv2.rectangle(image, (cntr[0], cntr[1] - 25), (cntr[0] + 250, cntr[1] + 10), (255, 255, 255), -1)
+            cv2.putText(image, label, (cntr[0], cntr[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
+            # aqui programamos la lógica de almacenamiento de ángulo
+            countdown.processnumber(angle)
+    else:
+        if countdown.GlobalVars.ready == 0:
+            countdown.GlobalVars.ready = 1
+            countdown.mostrarresultado(angle, 0)
+            countdown.GlobalVars.event.clear()
+            countdown.GlobalVars.registered = False
+
 
 def bucle(cap, upper_bound,lower_bound):
 
     while(1):
         ret,frame=cap.read()
 
-        print("dentro")
+
         ##extracode
         # convertir a espacio de colores hsv
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)

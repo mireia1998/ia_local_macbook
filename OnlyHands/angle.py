@@ -48,38 +48,41 @@ def angulosdedos(image, results, joint_list,handtype, width, height):
             #ploteo de la linea que une los markers
             cv2.line(image, puntoa1, puntob1, (0, 255, 0), thickness=2, lineType=8)
 
-            if not countdown.GlobalVars.event.is_set() and countdown.GlobalVars.registered==False: # aun no es cero
+            image=angleprocess(image,angle,width, height, a, b)
 
-                if (round(angle) < 5) :
-                    cv2.putText(image, "ready, wait...", tuple(np.multiply(b, [width, height]).astype(int)),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2, cv2.LINE_AA)
-                    if not countdown.GlobalVars.stop_event.is_set():
-                        countdown.hiloconteo(3)
-                    else:
-                        countdown.GlobalVars.stop_event.clear()
-                else:
-                    countdown.GlobalVars.stop_event.set()
-                    cv2.putText(image, "please move to 0 deg", tuple(np.multiply(a, [1000, 650]).astype(int)),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (240, 29, 0), 2, cv2.LINE_AA)
+    return image
 
-            elif countdown.GlobalVars.registered==False : # ya es cero
+def angleprocess(image, angle, width,height,a,b):
+    if not countdown.GlobalVars.event.is_set() and countdown.GlobalVars.registered == False:  # aun no es cero
 
-                if (round(angle) < 3):
-                    cv2.putText(image, "mueve tu mano...", tuple(np.multiply(b, [width, height]).astype(int)),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2, cv2.LINE_AA)
-                else:
-                    cv2.putText(image, str(round(angle)) + " degree",
-                                tuple(np.multiply(a, [1000, 650]).astype(int)),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (240, 29, 0), 2, cv2.LINE_AA)
-                    # aqui programamos la lógica de almacenamiento de ángulo
-                    countdown.processnumber(angle)
+        if (round(angle) < 5):
+            cv2.putText(image, "ready, wait...", tuple(np.multiply(b, [width, height]).astype(int)),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2, cv2.LINE_AA)
+            if not countdown.GlobalVars.stop_event.is_set():
+                countdown.hiloconteo(3)
             else:
-                if countdown.GlobalVars.ready == 0:
-                    countdown.GlobalVars.ready = 1
-                    countdown.mostrarresultado(angle,0)
-                    countdown.GlobalVars.event.clear()
-                    countdown.GlobalVars.registered= False
+                countdown.GlobalVars.stop_event.clear()
+        else:
+            countdown.GlobalVars.stop_event.set()
+            cv2.putText(image, "please move to 0 deg", tuple(np.multiply(a, [1000, 650]).astype(int)),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (240, 29, 0), 2, cv2.LINE_AA)
 
+    elif countdown.GlobalVars.registered == False:  # ya es cero
 
+        if (round(angle) < 3):
+            cv2.putText(image, "mueve tu mano...", tuple(np.multiply(b, [width, height]).astype(int)),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2, cv2.LINE_AA)
+        else:
+            cv2.putText(image, str(round(angle)) + " degree",
+                        tuple(np.multiply(a, [1000, 650]).astype(int)),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (240, 29, 0), 2, cv2.LINE_AA)
+            # aqui programamos la lógica de almacenamiento de ángulo
+            countdown.processnumber(angle)
+    else:
+        if countdown.GlobalVars.ready == 0:
+            countdown.GlobalVars.ready = 1
+            countdown.mostrarresultado(angle, 0)
+            countdown.GlobalVars.event.clear()
+            countdown.GlobalVars.registered = False
 
     return image

@@ -42,8 +42,8 @@ def mostrarresultado(angle,med):
         text=('Desviación cubital: '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
     elif GlobalVars.measType==3:
         text =('Desviación radial: '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
-    elif med==4:
-        pass
+    elif GlobalVars.measType==4:
+        text =('Pronosupinación: '+str(round(angle))+' grados')
     else:
         text=''
     layout=[[sg.Text(text)],
@@ -75,6 +75,7 @@ class GlobalVars:
     i=0
     measType=0
     lr=0
+
 
 
 def thread_function():

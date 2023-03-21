@@ -1,15 +1,10 @@
-import sys
-
 import mediapipe as mp
 import cv2
-import numpy as np
-import time
-import uuid
-import os
 import PySimpleGUI as sg
-import angle
 import frame as f
 import pronosupination as ps
+
+from OnlyHands.firebase import fb_auth as fbauth
 
 
 # Funcion bucle principal
@@ -22,17 +17,16 @@ def main():
     createLoginPage(mp_drawing, mp_hands, cap, width, height)
 
 
+
+#Metodo para iniciar sesion en FB
+
+
 def iniciarSesion(usuario, nip):
     correct = 0
     if (usuario == "" or nip == ""):
         sg.popup_error('Debes rellenar los campos')
     else:
-        if (usuario == "sener" and nip == "sener"):
-            sg.popup_ok('Inicio de sesion correcto')
-            correct = 1
-        else:
-            sg.popup_error('Usuario o contraseña incorrectos')
-            correct = 0
+        correct=fbauth.authenticate(usuario,nip)
     return correct
 
 
