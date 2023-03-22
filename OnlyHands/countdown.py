@@ -3,6 +3,7 @@ import time
 import threading
 from collections import deque
 import PySimpleGUI as sg
+import OnlyHands.firebase.fb_rtdb as rtdb
 
 
 class DataBuffer:
@@ -31,36 +32,6 @@ class DataBuffer:
         self.buffer.clear()
         self.total = 0
         self.avg = 0
-
-def mostrarresultado(angle,med):
-    text=''
-    if GlobalVars.measType==1:
-        text=('Flexión dorsal '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
-    elif GlobalVars.measType==0:
-        text=('Flexión palmar: '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
-    elif GlobalVars.measType==2:
-        text=('Desviación cubital: '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
-    elif GlobalVars.measType==3:
-        text =('Desviación radial: '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
-    elif GlobalVars.measType==4:
-        text =('Pronosupinación: '+str(round(angle))+' grados')
-    else:
-        text=''
-    layout=[[sg.Text(text)],
-            [sg.Button('Si'), sg.Button('No')]]
-    window = sg.Window('Guardar resultado?', layout)
-
-    while True:
-        event, values = window.read()
-        if event == sg.WIN_CLOSED or event == 'No':
-            sg.popup_ok('El resultado se ha descartado')
-            break
-        elif event == 'Si':
-            sg.popup_ok('El resultado se ha guardado')
-            break
-    GlobalVars.ready = 0
-    window.close()
-
 class GlobalVars:
     isZero = 0
     ready = 0
@@ -81,6 +52,44 @@ class GlobalVars:
     palmar = 0
     dorsal = 0
     date = '12-12-2023'
+def mostrarresultado(angle,med):
+    text=''
+    hand=''
+    value=round(angle)
+    if GlobalVars.measType==1:
+        text=('Flexión dorsal '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
+        hand='dorsal'+GlobalVars.lr[0]
+    elif GlobalVars.measType==0:
+        text=('Flexión palmar: '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
+        hand='palmar'+GlobalVars.lr[0]
+    elif GlobalVars.measType==2:
+        text=('Desviación cubital: '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
+        hand = 'cubital' + GlobalVars.lr[0]
+    elif GlobalVars.measType==3:
+        text =('Desviación radial: '+str(GlobalVars.lr)+' '+str(round(angle))+' grados')
+        hand = 'radial' + GlobalVars.lr[0]
+    elif GlobalVars.measType==4:
+        text =('Pronosupinación: '+str(round(angle))+' grados')
+        hand = 'pronacion' + GlobalVars.lr[0]
+    else:
+        text=''
+    layout=[[sg.Text(text)],
+            [sg.Button('Si'), sg.Button('No')]]
+    window = sg.Window('Guardar resultado?', layout)
+
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED or event == 'No':
+            sg.popup_ok('El resultado se ha descartado')
+            break
+        elif event == 'Si':
+            sg.popup_ok('El resultado se ha guardado')
+            rtdb.updateflexiondata(hand,value)
+            break
+    GlobalVars.ready = 0
+    window.close()
+
+
 
 
 
