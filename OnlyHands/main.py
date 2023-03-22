@@ -73,7 +73,7 @@ def createguimenu(mp_drawing, mp_hands, cap, width, height):
             break
         elif event == "Flexión Dorsal y Palmar":
             f.handDetect(mp_hands, cap, mp_drawing, 0, 17, 0, width, height)
-        elif event == "Aducción/abducción de muñeca":
+        elif event == "Desviación radial y cubital":
             f.handDetect(mp_hands, cap, mp_drawing, 0, 9, 1, width, height)
         elif event == "Prono/Supinación de muñeca":
             # Aqui conectamos al otro módulo

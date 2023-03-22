@@ -1,4 +1,3 @@
-
 import numpy as np
 import cv2
 import countdown
@@ -15,8 +14,9 @@ def angulosdedos(image, results, joint_list,handtype, width, height):
             radians=np.arctan2((hand.landmark[joint[1]].y - hand.landmark[joint[0]].y), (hand.landmark[joint[1]].x - hand.landmark[joint[0]].x))
             angle=np.abs(radians*180.0/np.pi)
 
-            if(angle>170):
+            if(countdown.GlobalVars.lr=='Right'):
                 angle=abs(180-angle)
+
 
             if(hand.landmark[joint[0]].y < hand.landmark[joint[1]].y):
                 if(handtype==0):

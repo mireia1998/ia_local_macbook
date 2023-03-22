@@ -1,18 +1,27 @@
 import requests
 import json
 import PySimpleGUI as sg
-
+from OnlyHands import countdown
 
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 
+from OnlyHands.firebase import fb_rtdb
+
+
 class FirebaseUtils:
 
     rest_api_url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword"
     api_key="AIzaSyDwPXa83bc7WMxQHYa256H-2TUYwS62_Pg"
+    realtime_url="https://ia-trauma-tfm-default-rtdb.europe-west1.firebasedatabase.app/"
 
 
+def extractUIDfromHTTPResponse(response):
+    response_body = response.content.decode('utf-8')
+    response_json = json.loads(response_body)
+    local_id = response_json['localId']
+    countdown.GlobalVars.uid=str(local_id)
 
 
 def sign_in_with_email_and_password(email: str, password: str, return_secure_token: bool = True):
@@ -27,24 +36,20 @@ def sign_in_with_email_and_password(email: str, password: str, return_secure_tok
                       data=payload)
 
     return r
-def initialize():
-    cred = credentials.Certificate('key.json')
-    firebase_admin.initialize_app(cred)
 
 
-def getlogindata():
-    login_ref=db.reference('Login')
-    login_data=login_ref.get()
-    user_ref=login_ref.child('pu9nTg5XP4WdGzFkLRXlp6emETQ2')
-    print(str(user_ref))
+
 def authenticate(user,password):
     ok=0
     token = sign_in_with_email_and_password(user,password)
+    print(str(token.json()))
     if token.status_code == 200:
         # Authentication successful
         print("User authenticated")
         ok=1
-        initialize()
+        fb_rtdb.initialize()
+        extractUIDfromHTTPResponse(token)
+        fb_rtdb.getlogindata()
         sg.popup_ok('Autenticación correcta')
     else:
         # Authentication failed

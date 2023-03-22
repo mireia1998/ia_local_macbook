@@ -75,6 +75,12 @@ class GlobalVars:
     i=0
     measType=0
     lr=0
+    uid = ''
+    uid_session = ''
+    nombre = 'unknown'
+    palmar = 0
+    dorsal = 0
+    date = '12-12-2023'
 
 
 
