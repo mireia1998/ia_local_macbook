@@ -47,11 +47,16 @@ class GlobalVars:
     measType=0
     lr=0
     uid = ''
-    uid_session = ''
+    uid_sessionF = ''
+    uid_sessionD = ''
+    uid_sessionP = ''
     nombre = 'unknown'
     palmar = 0
     dorsal = 0
     date = '12-12-2023'
+    doc_uid=''
+    docname=''
+    hospi=''
 def mostrarresultado(angle,med):
     text=''
     hand=''
@@ -70,12 +75,17 @@ def mostrarresultado(angle,med):
         hand = 'radial' + GlobalVars.lr[0]
     elif GlobalVars.measType==4:
         text =('Pronosupinación: '+str(round(angle))+' grados')
-        hand = 'pronacion' + GlobalVars.lr[0]
+        hand = 'pronosup'
     else:
         text=''
     layout=[[sg.Text(text)],
             [sg.Button('Si'), sg.Button('No')]]
     window = sg.Window('Guardar resultado?', layout)
+
+    layout2=[[sg.Text("Selecciona la mano")],
+            [sg.Button('Izda'), sg.Button('Dcha')]
+    ]
+    window2=sg.Window('Seleccion', layout2)
 
     while True:
         event, values = window.read()
@@ -84,7 +94,22 @@ def mostrarresultado(angle,med):
             break
         elif event == 'Si':
             sg.popup_ok('El resultado se ha guardado')
-            rtdb.updateflexiondata(hand,value)
+            if GlobalVars.measType < 2:
+                rtdb.updateflexiondata(hand,value)
+            elif GlobalVars.measType < 4:
+                rtdb.updatedesviaciondata(hand,value)
+            else: #caso en el que tuvieramos pronosupinacion
+                while True:
+                    event2, values2 = window2.read()
+                    if event2 == 'Izda':
+                        hand=hand+'L'
+                        rtdb.updatepronosupdata(hand,value)
+                        break
+                    elif event2 == 'Dcha':
+                        hand = hand + 'R'
+                        rtdb.updatepronosupdata(hand, value)
+                        break
+                window2.close()
             break
     GlobalVars.ready = 0
     window.close()

@@ -3,19 +3,28 @@ import cv2
 import PySimpleGUI as sg
 import frame as f
 import pronosupination as ps
+import profile
 
 from OnlyHands.firebase import fb_auth as fbauth
 
 
 # Funcion bucle principal
 def main():
+    #mp_drawing = mp.solutions.drawing_utils
+    #mp_hands = mp.solutions.hands
+    #cap = cv2.VideoCapture(0)  # para capturar video desde cámara
+    #cap = f.setFrameSize(cap)
+    #width, height = f.getFrameSize(cap)
+    #createLoginPage(mp_drawing, mp_hands, cap, width, height)
+    createLoginPage()
+
+def setupopencvenvironment():
     mp_drawing = mp.solutions.drawing_utils
     mp_hands = mp.solutions.hands
     cap = cv2.VideoCapture(0)  # para capturar video desde cámara
     cap = f.setFrameSize(cap)
     width, height = f.getFrameSize(cap)
-    createLoginPage(mp_drawing, mp_hands, cap, width, height)
-
+    return mp_drawing, mp_hands, cap, width, height
 
 
 #Metodo para iniciar sesion en FB
@@ -30,7 +39,7 @@ def iniciarSesion(usuario, nip):
     return correct
 
 
-def createLoginPage(mp_drawing, mp_hands, cap, width, height):
+def createLoginPage():
     # sg.theme('DarkPurple1')
 
     # Crear layout
@@ -51,11 +60,12 @@ def createLoginPage(mp_drawing, mp_hands, cap, width, height):
             valido = iniciarSesion(values['user'], values['nip'])
             if valido == 1:
                 window.close()
-                createguimenu(mp_drawing, mp_hands, cap, width, height)
+                createguimenu()
     window.close()
 
-
-def createguimenu(mp_drawing, mp_hands, cap, width, height):
+def createprofilepage():
+    pass
+def createguimenu():
     # sg.theme('DarkPurple1')
 
     # Crear layout
@@ -72,12 +82,16 @@ def createguimenu(mp_drawing, mp_hands, cap, width, height):
         if event == "OK" or event == sg.WIN_CLOSED:
             break
         elif event == "Flexión Dorsal y Palmar":
+            mp_drawing, mp_hands, cap, width, height = setupopencvenvironment()
             f.handDetect(mp_hands, cap, mp_drawing, 0, 17, 0, width, height)
         elif event == "Desviación radial y cubital":
+            mp_drawing, mp_hands, cap, width, height = setupopencvenvironment()
             f.handDetect(mp_hands, cap, mp_drawing, 0, 9, 1, width, height)
         elif event == "Prono/Supinación de muñeca":
             # Aqui conectamos al otro módulo
             ps.main2()
+        elif event == "Mi perfil":
+            profile.main3()
     window.close()
 
 

@@ -39,14 +39,17 @@ def createguimenu(cap):
             lower_bound = np.array([80, 150, 100])
             upper_bound = np.array([120, 255, 255])
             bucle(cap,upper_bound,lower_bound)
+            break
         elif event == "Rosa":
             lower_bound = np.array([140, 150, 100])
             upper_bound = np.array([175, 255, 255])
             bucle(cap,upper_bound,lower_bound)
+            break
         elif event == "Amarillo":
             lower_bound = np.array([15, 120, 100])
             upper_bound = np.array([35, 255, 255])
             bucle(cap,upper_bound,lower_bound)
+            break
     window.close()
 
 def setFrameSize(capp):
@@ -111,7 +114,9 @@ def getOrientation(pts, img):
     #textbox = cv2.rectangle(img, (cntr[0], cntr[1] - 25), (cntr[0] + 250, cntr[1] + 10), (255, 255, 255), -1)
     #cv2.putText(img, label, (cntr[0], cntr[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
 
-    angok=(-int(np.rad2deg(angle)) - 90)
+    angok=(int(np.rad2deg(angle)) - 90)
+    if(angok>133):
+        angok=abs(180-angok)
 
     angleprocess(img, angok, cntr)
 
@@ -121,9 +126,11 @@ def getOrientation(pts, img):
 def angleprocess(image, angle,cntr):
 
     angle=abs(angle)
-    angle=abs(180-angle)
+    if (angle > 80):
+        angle = abs(180 - angle)
 
-    print(str(angle))
+
+    print(str(angle)+"grados")
     if not countdown.GlobalVars.event.is_set() and countdown.GlobalVars.registered == False:  # aun no es cero
 
         if (round(angle) < 5):

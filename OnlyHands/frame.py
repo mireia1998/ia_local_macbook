@@ -51,7 +51,6 @@ def handDetect(mp_hands, cap, mp_drawing,joint1,joint2,mode, width, height):
 
             cv2.imshow('Midiendo...', image)
             if cv2.waitKey(10) & 0xFF == ord('q'):
-                pass
-                #main.main()
-    cap.release()
-    cv2.destroyAllWindows()
+                 cap.release()
+                 cv2.destroyAllWindows()
+
